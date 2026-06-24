@@ -1,0 +1,13 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Source / working files (not part of the published site)
+*.docx
+assets/PUT-PHOTO-HERE.txt
+
+# Logs
+*.log
