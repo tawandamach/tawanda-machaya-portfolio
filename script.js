@@ -1,6 +1,20 @@
 // ---------- Year ----------
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// ---------- Theme toggle ----------
+const themeToggleEl = document.getElementById("theme-toggle");
+if (themeToggleEl) {
+  const currentTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  themeToggleEl.textContent = currentTheme === "dark" ? "🌙" : "☀️";
+  themeToggleEl.addEventListener("click", () => {
+    const theme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    themeToggleEl.textContent = theme === "dark" ? "🌙" : "☀️";
+  });
+}
+
 // ---------- Nav scroll state ----------
 const nav = document.getElementById("nav");
 const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 30);
@@ -148,14 +162,15 @@ copyBtn.addEventListener("click", (e) => {
   window.addEventListener("resize", resize);
 
   function draw() {
-    ctx.fillStyle = "rgba(10,14,20,0.08)";
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    ctx.fillStyle = isLight ? "rgba(248,250,252,0.1)" : "rgba(10,14,20,0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = `${fontSize}px JetBrains Mono, monospace`;
     for (let i = 0; i < drops.length; i++) {
       const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
       const x = i * fontSize;
       const y = drops[i] * fontSize;
-      ctx.fillStyle = Math.random() > 0.975 ? "#2ea0ff" : "rgba(0,229,160,0.45)";
+      ctx.fillStyle = isLight ? (Math.random() > 0.975 ? "#2ea0ff" : "rgba(0,229,160,0.3)") : (Math.random() > 0.975 ? "#2ea0ff" : "rgba(0,229,160,0.45)");
       ctx.fillText(ch, x, y);
       if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
